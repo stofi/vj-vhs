@@ -44,13 +44,13 @@ class Experience {
         this.renderer = new Renderer()
         this.controls = new Controls()
 
-        this.gui.close()
-        // if not #debug destroy the gui
-        if (
-            !window.location.hash.match('#debug') &&
-            process.env.NODE_ENV !== 'development'
-        )
-            this.gui.hide()
+        // this.gui.close()
+        // // if not #debug destroy the gui
+        // if (
+        //     !window.location.hash.match('#debug') &&
+        //     process.env.NODE_ENV !== 'development'
+        // )
+        //     this.gui.hide()
 
         this.resize()
 
