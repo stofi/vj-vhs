@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import Dropzone from '../Dropzone'
 import Experience from '../Experience'
-import UICanvas from '../UI/UICanvas'
+import UICanvas, { Element } from '../UI/UICanvas'
+import UIInput from '../UI/UIInput'
 
 export default class VideoPlane {
     experience: Experience
@@ -11,12 +12,15 @@ export default class VideoPlane {
     texture: THREE.Texture
     video: HTMLVideoElement
     ui: UICanvas
+    controls: UIInput
+    element: Element
 
     constructor() {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.video = document.createElement('video')
         this.ui = new UICanvas()
+        this.controls = new UIInput()
 
         this.texture = new THREE.VideoTexture(this.video)
         this.texture.minFilter = THREE.LinearFilter
@@ -42,26 +46,49 @@ export default class VideoPlane {
 
         this.experience.camera.instance.add(plane)
 
-        const element = this.ui.newElement('DROP A VIDEO', {
+        this.element = this.ui.newElement('DROP A VIDEO', {
             align: 'center',
             x: 160,
             y: 100,
             size: 32,
         })
+        const fileInput = document.createElement('input')
+        fileInput.type = 'file'
+        fileInput.accept = 'video/*'
+        const clickHandler = () => {
+            console.log('click')
 
-        this.dropzone = new Dropzone(this.experience.canvas, (file: File) => {
-            // if file type is video
-            if (file.type.indexOf('video') !== -1) {
-                this.video.src = URL.createObjectURL(file)
-                this.video.load() // must call after setting/changing source
+            if (this.video.src) {
                 this.video.play()
-                this.video.loop = true
-
-                this.texture.needsUpdate = true
-                element.text = ''
+            } else {
+                fileInput.click()
             }
+        }
+        this.controls.on('enter', clickHandler)
+        this.controls.on('click', clickHandler)
+        fileInput.addEventListener('change', (event) => {
+            const target = event.target as HTMLInputElement
+            const file = target?.files?.[0] as File
+            this.handleFile(file)
         })
 
+        this.dropzone = new Dropzone(
+            this.experience.canvas,
+            this.handleFile.bind(this)
+        )
+
         this.scene.add(this.plane)
+    }
+    handleFile(file: File) {
+        // if file type is video
+        if (file.type.indexOf('video') !== -1) {
+            this.video.src = URL.createObjectURL(file)
+            this.video.load() // must call after setting/changing source
+            this.video.play()
+            this.video.loop = true
+
+            this.texture.needsUpdate = true
+            this.element.text = ''
+        }
     }
 }
