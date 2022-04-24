@@ -42,7 +42,7 @@ export default class VideoPlane {
 
         this.experience.camera.instance.add(plane)
 
-        this.ui.newElement('NEW SCENE', {
+        const element = this.ui.newElement('DROP A VIDEO', {
             align: 'center',
             x: 160,
             y: 100,
@@ -58,6 +58,7 @@ export default class VideoPlane {
                 this.video.loop = true
 
                 this.texture.needsUpdate = true
+                element.text = ''
             }
         })
 
