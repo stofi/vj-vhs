@@ -29,7 +29,7 @@ class UIInput extends EventEmitter {
         super()
         if (instance) return instance
         instance = this
-        this.registerSwipeEvents()
+        // this.registerSwipeEvents()
         this.registerArrowKeys()
     }
 
@@ -108,6 +108,8 @@ class UIInput extends EventEmitter {
         })
         window.addEventListener('touchend', (event) => {
             if (event.touches.length === 0) {
+                console.log(event)
+
                 event.preventDefault()
                 const time = Date.now()
                 const touchTime = time - this.touchStartTime
@@ -160,9 +162,16 @@ class UIInput extends EventEmitter {
         })
         // tap / click
         this.registerEvent({
-            type: 'tap',
+            type: 'click',
             keys: ['click'],
-            condition: (event: MouseEvent) => event.button === 0,
+            condition: (event: MouseEvent) => {
+                // const click = event.button === 0
+                const target = event.target as HTMLElement
+                if (!target) return false
+                const onCanvas = target.classList.contains('webgl')
+
+                return onCanvas
+            },
         })
 
         // esc

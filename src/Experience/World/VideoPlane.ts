@@ -14,6 +14,7 @@ export default class VideoPlane {
     ui: UICanvas
     controls: UIInput
     element: Element
+    fileInput: HTMLInputElement
 
     constructor() {
         this.experience = new Experience()
@@ -52,21 +53,13 @@ export default class VideoPlane {
             y: 100,
             size: 32,
         })
-        const fileInput = document.createElement('input')
-        fileInput.type = 'file'
-        fileInput.accept = 'video/*'
-        const clickHandler = () => {
-            console.log('click')
+        this.fileInput = document.createElement('input')
+        this.fileInput.type = 'file'
+        this.fileInput.accept = 'video/*'
 
-            if (this.video.src) {
-                this.video.play()
-            } else {
-                fileInput.click()
-            }
-        }
-        this.controls.on('enter', clickHandler)
-        this.controls.on('click', clickHandler)
-        fileInput.addEventListener('change', (event) => {
+        this.controls.on('enter', this.clickHandler.bind(this))
+        this.controls.on('click', this.clickHandler.bind(this))
+        this.fileInput.addEventListener('change', (event) => {
             const target = event.target as HTMLInputElement
             const file = target?.files?.[0] as File
             this.handleFile(file)
@@ -81,6 +74,7 @@ export default class VideoPlane {
     }
     handleFile(file: File) {
         // if file type is video
+
         if (file.type.indexOf('video') !== -1) {
             this.video.src = URL.createObjectURL(file)
             this.video.load() // must call after setting/changing source
@@ -89,6 +83,13 @@ export default class VideoPlane {
 
             this.texture.needsUpdate = true
             this.element.text = ''
+        }
+    }
+    clickHandler() {
+        if (this.video.src) {
+            this.video.play()
+        } else {
+            this.fileInput.click()
         }
     }
 }
