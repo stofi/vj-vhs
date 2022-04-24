@@ -78,12 +78,12 @@ void main(){
 	);
 	
 	// Apply brightness
-	color.rgb+=(brightness*userBrightness)+.5;
+	color.rgb+=(brightness)+.5;
 	vec3 hsv=rgb2hsv(color.rgb);
 	// Apply saturation
-	// hsv.y=mix(hsv.y,saturation,step(hsv.y,saturation));
+	hsv.y=mix(hsv.y,saturation,step(hsv.y,saturation));
 	// Apply hue
-	// hsv.z=mix(hsv.z,hue,step(hsv.z,hue));
+	hsv.z=mix(hsv.z,hue,step(hsv.z,hue));
 	color.rgb=hsv2rgb(hsv);
 	
 	color.rgb*=color.a;

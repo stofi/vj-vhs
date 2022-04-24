@@ -72,7 +72,7 @@ void main(){
 	p.x+=uTime*noiseSpeed;
 	p.y+=uTime*noiseSpeed;
 	// float n=2.*((noise(p)*noiseAmount)-.5);
-	float n=((noise(p)*noiseAmount))*userNoiseAmount;
+	float n=((noise(p)*noiseAmount));
 	
 	vec4 color=texture2D(tDiffuse,vUv);
 	color.rgb/=color.a;

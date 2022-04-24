@@ -10,7 +10,7 @@ const FX = {
         saturation: { value: 0.4 },
         hue: { value: 0 },
         seekDisortionAmount: { value: 0.05 },
-        seekDisortionSpeed: { value: 0.0 },
+        seekDisortionSpeed: { value: 0.1 },
         userBrightness: { value: 0.5 },
     },
 

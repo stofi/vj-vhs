@@ -65,7 +65,7 @@ void main()
 	float b=texture2D(tDiffuse,uv).b;
 	
 	vec4 tex=vec4(r,g,b,1.);
-	gl_FragColor=mix(original,tex,uAmount*userFlickerAmount);
+	gl_FragColor=mix(original,tex,uAmount);
 	
 }
 
