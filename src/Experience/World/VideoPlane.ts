@@ -54,11 +54,15 @@ export default class VideoPlane {
             size: 32,
         })
         this.fileInput = document.createElement('input')
+        this.fileInput.classList.add('hidden')
+        this.fileInput.classList.add('absolute')
+        this.fileInput.classList.add('z-1')
+        document.body.appendChild(this.fileInput)
         this.fileInput.type = 'file'
         this.fileInput.accept = 'video/*'
 
         this.controls.on('enter', this.clickHandler.bind(this))
-        this.controls.on('click', this.clickHandler.bind(this))
+        // this.controls.on('click', this.clickHandler.bind(this))
 
         this.experience.canvas.addEventListener(
             'click',
@@ -68,6 +72,7 @@ export default class VideoPlane {
         this.fileInput.addEventListener('change', (event) => {
             const target = event.target as HTMLInputElement
             const file = target?.files?.[0] as File
+
             this.handleFile(file)
         })
 
@@ -96,6 +101,7 @@ export default class VideoPlane {
             this.video.play()
         } else {
             this.fileInput.click()
+            console.log('click')
         }
     }
 }
