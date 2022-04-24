@@ -59,6 +59,12 @@ export default class VideoPlane {
 
         this.controls.on('enter', this.clickHandler.bind(this))
         this.controls.on('click', this.clickHandler.bind(this))
+
+        this.experience.canvas.addEventListener(
+            'click',
+            this.clickHandler.bind(this)
+        )
+
         this.fileInput.addEventListener('change', (event) => {
             const target = event.target as HTMLInputElement
             const file = target?.files?.[0] as File
